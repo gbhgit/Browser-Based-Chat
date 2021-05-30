@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Chat Room {{room.room_name}}</h2>
+<h2>{{ user.username|default:'Guest' }} you are in chat room {{room.room_name}}</h2>
 
 <a href="{% url 'index' %}">Back to home</a>
 {% endblock %}
