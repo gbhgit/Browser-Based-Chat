@@ -20,14 +20,14 @@ class Server(AsyncWebsocketConsumer):
             {
                 'type': 'send_message',
                 'message': data['message'],
-                'user_id': data['user_id']
+                'user_name': data['user_name']
             }
         )
     
     async def send_message(self, event):
         await self.send(text_data=json.dumps({
             'message': event['message'],
-            'user_id': event['user_id']
+            'user_name': event['user_name']
         }))
 
     @sync_to_async

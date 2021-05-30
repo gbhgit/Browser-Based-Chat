@@ -13,6 +13,7 @@ def index(request, chat_room_id=None):
         num_results = ChatRoom.objects.filter(id = chat_room_id).count()
         if num_results > 0:
             room = ChatRoom.objects.get(id = chat_room_id)
+            room.room_users.add(request.user)
             context = {'room': room,}
             return render(request, "chat/chat.html", context)
         else:
