@@ -28,25 +28,32 @@
 </html>
 {{ room.id|json_script:"json-roomId" }}
 {{ user.id|json_script:"json-userId" }}
-<script>  
+{{ user.username|json_script:"json-userName" }}
+<script> 
+    const userName = JSON.parse(document.getElementById('json-userName').textContent); 
     const userId = JSON.parse(document.getElementById('json-userId').textContent);
     const roomId = JSON.parse(document.getElementById('json-roomId').textContent);
-    const chatWs = new WebSocket(
-        'ws://'
-        + window.location.host
-        + '/ws/'
-        + roomId
-        + '/'
-    );
+    
+    const chatWs = new WebSocket('ws://'+ window.location.host+ '/ws/'+ roomId+ '/');
+
+    chatWs.onclose = function(e){};
 
     document.querySelector('#send').onclick = function(e) {
         const message = document.querySelector('#input_message').value;
         chatWs.send(JSON.stringify({
             'message': message,
             'user_id': userId,
-            'room_id': roomId
+            'room_id': roomId,
+            'user_name': userName,
         }));
         document.querySelector('#input_message').value = '';
+    };
+
+    chatWs.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.message) {
+            document.querySelector('#messages').innerHTML += ('<b>' + data.user_name + '</b>: ' + data.message + '<br>');
+        } 
     };
     
 </script>
