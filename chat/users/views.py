@@ -3,9 +3,33 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from users.forms import CustomUserCreationForm
 from .forms import ChatRoomForm
-from .models import ChatRoom
+from .serializers import PostListSerializer
+from .models import ChatRoom, Post
 from django.contrib.auth.decorators import login_required
 from django.views import generic
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+
+@login_required
+@api_view(['POST'])
+def get_all_room_posts(request):
+    room_id = request.POST['room_id']
+    room = ChatRoom.objects.get(pk=room_id)
+    num_results = ChatRoom.objects.filter(pk=room_id).count()
+    if num_results < 1:
+        return JsonResponse({'posts': None})
+    elif len(Post.objects.filter(room=room)) > 50:
+        posts = Post.objects.filter(room=room).order_by('-created')[: 50]
+    else:
+        posts = Post.objects.filter(room=room).order_by('-created')
+        
+    for post in posts:
+        post.creator = post.created_by.username
+        post.created_date = post.created.strftime('%Y-%m-%d')
+        post.created_time = post.created.strftime('%H:%M')
+    response = {'posts': PostListSerializer(posts, many=True).data,}
+
+    return JsonResponse(response)
 
 @login_required
 def index(request, chat_room_id=None):
