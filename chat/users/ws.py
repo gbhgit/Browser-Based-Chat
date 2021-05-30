@@ -15,19 +15,23 @@ class Server(AsyncWebsocketConsumer):
     
     async def receive(self, text_data):
         data = json.loads(text_data)
-        await self.save_post(data['user_id'], data['room_id'], data['message'])
+        out = await self.save_post(data['user_id'], data['room_id'], data['message'])
         await self.channel_layer.group_send( self.room_group,
             {
                 'type': 'send_message',
                 'message': data['message'],
-                'user_name': data['user_name']
+                'user_name': data['user_name'],
+                'created_date': out['created_date'],
+                'created_time': out['created_time']
             }
         )
     
     async def send_message(self, event):
         await self.send(text_data=json.dumps({
             'message': event['message'],
-            'user_name': event['user_name']
+            'user_name': event['user_name'],
+            'created_date': event['created_date'],
+            'created_time': event['created_time']
         }))
 
     @sync_to_async
@@ -37,3 +41,4 @@ class Server(AsyncWebsocketConsumer):
         user = User.objects.get(pk=user_id)
         post = Post.objects.create(room=room, msn=message, created_by=user)
         post.save()
+        return {'created_date': post.created.strftime('%Y-%m-%d'), 'created_time': post.created.strftime('%H:%M')}

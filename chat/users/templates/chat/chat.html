@@ -53,8 +53,12 @@
             success: function (data) {
                 if (data.posts.length > 0) {
                     for (var i=data.posts.length-1; i>=0; i--) {
-                        //'</b>: ' + data.posts[i].created_date + data.posts[i].created_time + '<br>'
-                        document.querySelector('#messages').innerHTML += ('<b>' + data.posts[i].created_by + '</b>: ' + data.posts[i].msn + '<br>');
+                        document.querySelector('#messages').innerHTML += (
+                        `<div class="alert alert-success alert-dismissible text-left mt-3">
+                            <small> [${data.posts[i].created_date} - ${data.posts[i].created_time}]</small>
+                            <b>${data.posts[i].created_by}</b> :
+                            <small class="col">${data.posts[i].msn}</small>
+                        </div`);
                     }
                     scrollToEnd();
                 }
@@ -82,7 +86,12 @@
     chatWs.onmessage = function(e) {
         const data = JSON.parse(e.data);
         if (data.message) {
-            document.querySelector('#messages').innerHTML += ('<b>' + data.user_name + '</b>: ' + data.message + '<br>');
+            document.querySelector('#messages').innerHTML += (
+            `<div class="alert alert-success alert-dismissible text-left mt-3">
+                <small> [${data.created_date} - ${data.created_time}]</small>
+                <b>${data.user_name}</b> :
+                <small class="col">${data.message}</small>
+            </div`);
             scrollToEnd();
         } 
     };
