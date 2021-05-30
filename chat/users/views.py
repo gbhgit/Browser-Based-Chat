@@ -8,10 +8,21 @@ from django.contrib.auth.decorators import login_required
 from django.views import generic
 
 @login_required
-def index(request):
-    rooms = ChatRoom.objects.all()
-    context = {'rooms': rooms,}
-    return render(request, "users/home.html", context)
+def index(request, chat_room_id=None):
+    if chat_room_id != None:
+        num_results = ChatRoom.objects.filter(id = chat_room_id).count()
+        if num_results > 0:
+            room = ChatRoom.objects.get(id = chat_room_id)
+            context = {'room': room,}
+            return render(request, "chat/chat.html", context)
+        else:
+            rooms = ChatRoom.objects.all()
+            context = {'rooms': rooms,}
+            return render(request, "users/home.html", context)
+    else:
+        rooms = ChatRoom.objects.all()
+        context = {'rooms': rooms,}
+        return render(request, "users/home.html", context)
 
 @login_required
 def register_room(request):
