@@ -10,4 +10,4 @@ class CustomUserCreationForm(UserCreationForm):
 class ChatRoomForm(ModelForm):
     class Meta:
         model = ChatRoom
-        fields = "__all__"
+        fields = ("room_name",)
