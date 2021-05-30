@@ -26,14 +26,27 @@
         </div>
     </body>
 </html>
-{{ room.id|json_script:"json-roomid" }}
+{{ room.id|json_script:"json-roomId" }}
+{{ user.id|json_script:"json-userId" }}
 <script>  
-    const roomId = JSON.parse(document.getElementById('json-roomid').textContent);
-    const chatSocket = new WebSocket(
+    const userId = JSON.parse(document.getElementById('json-userId').textContent);
+    const roomId = JSON.parse(document.getElementById('json-roomId').textContent);
+    const chatWs = new WebSocket(
         'ws://'
         + window.location.host
         + '/ws/'
         + roomId
         + '/'
     );
+
+    document.querySelector('#send').onclick = function(e) {
+        const message = document.querySelector('#input_message').value;
+        chatWs.send(JSON.stringify({
+            'message': message,
+            'user_id': userId,
+            'room_id': roomId
+        }));
+        document.querySelector('#input_message').value = '';
+    };
+    
 </script>
