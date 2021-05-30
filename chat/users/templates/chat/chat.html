@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <html>
@@ -33,19 +35,41 @@
     const userName = JSON.parse(document.getElementById('json-userName').textContent); 
     const userId = JSON.parse(document.getElementById('json-userId').textContent);
     const roomId = JSON.parse(document.getElementById('json-roomId').textContent);
-    
-    const chatWs = new WebSocket('ws://'+ window.location.host+ '/ws/'+ roomId+ '/');
+    get_all_previous_room_posts();
 
+    function get_all_previous_room_posts() {
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'get_all_room_posts' %}',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                room_id: roomId
+            },
+            success: function (data) {
+                if (data.posts.length > 0) {
+                    for (var i=data.posts.length-1; i>=0; i--) {
+                        //'</b>: ' + data.posts[i].created_date + data.posts[i].created_time + '<br>'
+                        document.querySelector('#messages').innerHTML += ('<b>' + data.posts[i].created_by + '</b>: ' + data.posts[i].msn + '<br>');
+                    }
+                }
+            }
+        });
+    }
+
+    const chatWs = new WebSocket('ws://'+ window.location.host+ '/ws/'+ roomId+ '/');
+    
     chatWs.onclose = function(e){};
 
     document.querySelector('#send').onclick = function(e) {
         const message = document.querySelector('#input_message').value;
-        chatWs.send(JSON.stringify({
-            'message': message,
-            'user_id': userId,
-            'room_id': roomId,
-            'user_name': userName,
-        }));
+        if (message) {
+            chatWs.send(JSON.stringify({
+                'message': message,
+                'user_id': userId,
+                'room_id': roomId,
+                'user_name': userName,
+            }));
+        }
         document.querySelector('#input_message').value = '';
     };
 
