@@ -1,11 +1,10 @@
-from django.conf.urls import include, url
-from users.views import register, index, register_room
-
-
+from . import views
+from django.urls import path, include
+ 
 urlpatterns = [
-    url(r"^accounts/", include("django.contrib.auth.urls")),
-    #url(r"^home/", home, name="home"),
-    url(r"^register/", register, name="register"),
-    url(r"^room/", register_room, name="register_room"),
-    url(r"^", index, name="index"),
+    path('accounts/', include("django.contrib.auth.urls")),
+    path('register/', views.register, name='register'),
+    path('room/', views.register_room, name='register_room'),
+    path('', views.index, name='index'),
+    path('<int:chat_room_id>', views.index, name='chat_room'),
 ]
