@@ -67,7 +67,7 @@
 
     const chatWs = new WebSocket('ws://'+ window.location.host+ '/ws/'+ roomId+ '/');
     
-    chatWs.onclose = function(e){};
+    chatWs.onclose = function(e){ alert("Please press F5 to reload the page, lost connection with the server");};
 
     document.querySelector('#send').onclick = function(e) {
         const message = document.querySelector('#input_message').value;
