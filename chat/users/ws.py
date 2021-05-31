@@ -16,7 +16,10 @@ class BOT:
     def stock(self, param):
         r = requests.get('https://stooq.com/q/l/?s={}&f=sd2t2ohlcv&h&e=csv%E2%80%8B'.format(param))
         row = next( csv.DictReader( StringIO(r.text) ) )
-        return '{} quote is {} per share'.format(row['Symbol'], row['Close'])
+        if row['Close'] == 'N/D':
+            return 'Error: Command not have quote'
+        else:   
+            return '{} quote is ${} per share'.format(row['Symbol'], row['Close'])
     def deploy(self, command):
         stock_cmd = command.split("=")
         current_time = datetime.now()
