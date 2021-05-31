@@ -1,0 +1,30 @@
+version: '3'
+services:
+    redis:
+      container_name: redis
+      image: redis
+      restart: always
+      command: ["redis-server", "--appendonly", "yes"]
+      ports:
+        - "6379:6379"
+      volumes:
+        - redis-data:/data
+
+    migration:
+      build: .
+      command: bash -c "python manage.py makemigrations chat && python manage.py migrate"
+      volumes:
+        - .:/django_chat_room
+
+    chat:
+      build: .
+      command: bash -c "python manage.py runserver 0.0.0.0:8000"
+      restart: always
+      ports:
+        - "8000:8000"
+      volumes:
+        - .:/chat
+      depends_on:
+        - redis
+volumes:
+    redis-data:

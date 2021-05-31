@@ -1,0 +1,6 @@
+requests
+django
+djangorestframework
+channels
+channels_redis
+pytest
