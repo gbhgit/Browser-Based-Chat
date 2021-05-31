@@ -1,13 +1,22 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
 
-{% block content %}
-<h2>Create Room</h2>
+<html>
+    <div class="shadow p-4 mb-4 bg-white">
+        <a href="{% url 'index' %}" class="btn btn-outline-primary btn-sm" role="button"">Home Page</a>
+        <a class="btn btn-outline-secondary btn-sm"">User: {{ user.username }}</a>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="create">
+    </form>
+</html>
 
-<form method="post">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="create">
-</form>
-
-<a href="{% url 'index' %}">Back to home</a>
-{% endblock %}
