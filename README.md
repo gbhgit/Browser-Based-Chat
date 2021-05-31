@@ -21,3 +21,4 @@ from an API using a specific command.
 	   	
 		sudo docker ps
 - 5: Then check the web app in [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- 6: Basic registred user username: admin and password: 123
