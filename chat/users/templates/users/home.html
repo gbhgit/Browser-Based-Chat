@@ -17,12 +17,12 @@
             <a class="btn btn-outline-secondary btn-sm"">User: {{ user.username }}</a>
         </div>
         <div class="mt-3">
-            <div class="alert alert-secondary alert-dismissible text-center mt-3">
+            <div class="alert alert-info alert-dismissible text-center mt-3">
                 <b>Chat Room List</b>
             </div>
             <div class="list-group">
                 {% for room in rooms %}
-                    <a href="{% url 'chat_room' room.id %}" class="list-group-item list-group-item-action list-group-item-primary">{{room.room_name}}</a>
+                    <a href="{% url 'chat_room' room.id %}" class="list-group-item list-group-item-action list-group-item-secondary">{{room.room_name}}</a>
                 {% endfor %}
             </div>
         </div>

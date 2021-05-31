@@ -9,18 +9,22 @@
 </head>
 <html>
     <div class="shadow p-4 mb-4 bg-white">
-        <a href="{% url 'register' %}" class="btn btn-outline-primary btn-sm" role="button"">Click here to Sing-Up</a>
+        <a href="{% url 'register' %}" class="btn btn-outline-primary btn-sm" role="button"">Click here Sing-Up</a>
+        <h1 class="mt-2">DJANGO WEB CHAT </h1>
     </div>
-    <div class="mt-3">
-        <div class="alert alert-success alert-dismissible text-center mt-3">
-            DJANGO WEB CHAT
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h1 class="mt-2">Sing-In</h1>
+                <hr class="mt-0 mb-4">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Sing-In">
+                </form>
+            </div>
         </div>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Login">
-    </form>
 </html>
 
 
