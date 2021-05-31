@@ -5,7 +5,7 @@ from an API using a specific command.
 ### Recomendations
   - Redis >= 5
   - Python 3
-  - System has been tested for linux 
+  - Tested in Linux
 
 ### Installation and Deploy using Docker
 - 1: Check if redis is running, case is running stop your current redis server using the command below, just to avoid conflicts:
