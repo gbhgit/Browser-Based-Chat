@@ -12,9 +12,18 @@
         <a href="{% url 'index' %}" class="btn btn-outline-primary btn-sm" role="button"">Home Page</a>
         <a class="btn btn-outline-secondary btn-sm"">User: {{ user.username }}</a>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" value="create">
-    </form>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h1 class="mt-2 text-center">Create chat room</h1>
+                <hr class="mt-0 mb-4">
+                <form method="post">
+                    {% csrf_token %}
+                    {{form}}
+                    <input type="submit" value="create">
+                </form>
+            </div>
+        </div>
+    </div>
+    
 </html>

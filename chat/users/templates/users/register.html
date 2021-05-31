@@ -9,18 +9,18 @@
 </head>
 <html>
     <div class="shadow p-4 mb-4 bg-white">
-        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm" role="button"">Bsck to Sing-In</a>
-        <h1 class="mt-2">DJANGO WEB CHAT </h1>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm" role="button"">Bsck to Sign-In</a>
+        <h1 class="mt-2">DJANGO CHAT ROOMS</h1>
     </div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-8">
-                <h1 class="mt-2">Sing-Up</h1>
+                <h1 class="mt-2">Sign-Up</h1>
                 <hr class="mt-0 mb-4">
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="submit" value="Sing-Up">
+                    <input type="submit" value="Save">
                 </form>
             </div>
         </div>
