@@ -10,17 +10,18 @@
 <html>
     <body>
         <div class="shadow p-4 mb-4 bg-white">
-            <a href="{% url 'index' %}" class="btn btn-dark btn-sm" role="button"">Home</a>   
+            <a href="{% url 'index' %}" class="btn btn-outline-primary btn-sm" role="button"">Home Page</a>
+            <a class="btn btn-outline-secondary btn-sm"">User: {{ user.username }}</a>    
             <div class="mt-3">
                 <div class="alert alert-success alert-dismissible text-center mt-3">
-                    <a class="btn btn-dark btn-sm" role="button"">Chat Room: {{ room.room_name }}</a>
+                    Chat Room: <b>{{ room.room_name }}</b>
                 </div>
             </div>
             <div class="border p-3 my-3">
                 <div id="messages" style="max-height: 300px; overflow-y: scroll;"></div>
             </div>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Type..." id="input_message">
+                <input type="text" class="form-control" onkeypress="sendByEnter();" placeholder="Type here {{ user.username }}..." id="input_message">
                 <div class="input-group-append">
                     <button class="btn btn-outline-primary" type="button" id="send">Send</button>
                 </div>
@@ -32,18 +33,38 @@
 {{ user.id|json_script:"json-userId" }}
 {{ user.username|json_script:"json-userName" }}
 <script> 
+
     var just50Messages = 0;
     const userName = JSON.parse(document.getElementById('json-userName').textContent); 
     const userId = JSON.parse(document.getElementById('json-userId').textContent);
     const roomId = JSON.parse(document.getElementById('json-roomId').textContent);
-    get_all_previous_room_posts();
+    
+    getPrevPosts();
 
     function scrollToEnd() {
         let obj = document.getElementById("messages");
         obj.scrollTop = obj.scrollHeight;
     }
 
-    function get_all_previous_room_posts() {
+    function postMsn() {
+        const message = document.querySelector('#input_message').value;
+        if (message) {
+            chatWs.send(JSON.stringify({
+                'message': message,
+                'user_id': userId,
+                'room_id': roomId,
+                'user_name': userName,
+            }));
+        }
+        document.querySelector('#input_message').value = '';
+    }
+
+    function sendByEnter() {
+        let key = window.event.keyCode;
+        if (key === 13) postMsn();
+    }
+
+    function getPrevPosts() {
         $.ajax({
             type: 'POST',
             url: '{% url 'get_all_room_posts' %}',
@@ -56,9 +77,9 @@
                     for (var i=data.posts.length-1; i>=0; i--) {
                         just50Messages++;
                         document.querySelector('#messages').innerHTML += (
-                        `<div id="${just50Messages}_messages" class="alert alert-success alert-dismissible text-left mt-3">
+                        `<div id="${just50Messages}_messages" class="alert alert-secondary alert-dismissible text-left mt-3">
                             <small> [${data.posts[i].created_date} - ${data.posts[i].created_time}]</small>
-                            <b>${data.posts[i].created_by}</b> : <small>${data.posts[i].msn}</small>
+                            <b>${data.posts[i].created_by}</b>: <small>${data.posts[i].msn}</small>
                         </div`);
                     }
                     scrollToEnd();
@@ -71,18 +92,7 @@
     
     chatWs.onclose = function(e){ alert("Please press F5 to reload the page, lost connection with the server");};
 
-    document.querySelector('#send').onclick = function(e) {
-        const message = document.querySelector('#input_message').value;
-        if (message) {
-            chatWs.send(JSON.stringify({
-                'message': message,
-                'user_id': userId,
-                'room_id': roomId,
-                'user_name': userName,
-            }));
-        }
-        document.querySelector('#input_message').value = '';
-    };
+    document.querySelector('#send').onclick = function(e) { postMsn(); };
 
     chatWs.onmessage = function(e) {
         const data = JSON.parse(e.data);
@@ -94,9 +104,9 @@
             }
             
             document.querySelector('#messages').innerHTML += (
-            `<div id="${just50Messages}_messages" class="alert alert-success alert-dismissible text-left mt-3">
+            `<div id="${just50Messages}_messages" class="alert alert-secondary alert-dismissible text-left mt-3">
                 <small> [${data.created_date} - ${data.created_time}]</small>
-                <b>${data.user_name}</b> : <small>${data.message}</small>
+                <b>${data.user_name}</b>: <small>${data.message}</small>
             </div`);
             
             scrollToEnd();
