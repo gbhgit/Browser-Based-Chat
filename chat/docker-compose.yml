@@ -23,7 +23,7 @@ services:
       ports:
         - "8000:8000"
       volumes:
-        - .:/chat
+        - .:/Chat-Django
       depends_on:
         - redis
 volumes:
