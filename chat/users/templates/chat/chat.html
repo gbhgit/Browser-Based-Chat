@@ -32,6 +32,7 @@
 {{ user.id|json_script:"json-userId" }}
 {{ user.username|json_script:"json-userName" }}
 <script> 
+    var just50Messages = 0;
     const userName = JSON.parse(document.getElementById('json-userName').textContent); 
     const userId = JSON.parse(document.getElementById('json-userId').textContent);
     const roomId = JSON.parse(document.getElementById('json-roomId').textContent);
@@ -53,8 +54,9 @@
             success: function (data) {
                 if (data.posts.length > 0) {
                     for (var i=data.posts.length-1; i>=0; i--) {
+                        just50Messages++;
                         document.querySelector('#messages').innerHTML += (
-                        `<div class="alert alert-success alert-dismissible text-left mt-3">
+                        `<div id="${just50Messages}_messages" class="alert alert-success alert-dismissible text-left mt-3">
                             <small> [${data.posts[i].created_date} - ${data.posts[i].created_time}]</small>
                             <b>${data.posts[i].created_by}</b> : <small>${data.posts[i].msn}</small>
                         </div`);
@@ -85,11 +87,18 @@
     chatWs.onmessage = function(e) {
         const data = JSON.parse(e.data);
         if (data.message) {
+            just50Messages++;
+            if (just50Messages > 50) {
+                var myobj = document.getElementById(`${just50Messages - 50}_messages`);
+                myobj.remove();
+            }
+            
             document.querySelector('#messages').innerHTML += (
-            `<div class="alert alert-success alert-dismissible text-left mt-3">
+            `<div id="${just50Messages}_messages" class="alert alert-success alert-dismissible text-left mt-3">
                 <small> [${data.created_date} - ${data.created_time}]</small>
                 <b>${data.user_name}</b> : <small>${data.message}</small>
             </div`);
+            
             scrollToEnd();
         } 
     };
