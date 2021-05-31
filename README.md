@@ -2,6 +2,8 @@
 This application allow several users to talk in a chatroom and also to get stock quotes
 from an API using a specific command.
 
+![](https://github.com/gbhgit/Chat-Django/blob/main/images/front.png)
+
 ### Recomendations
   - Redis >= 5
   - Python 3
