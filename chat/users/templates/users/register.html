@@ -1,15 +1,32 @@
-<!--users/templates/users/register.html-->
+<!DOCTYPE html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<html>
+    <div class="shadow p-4 mb-4 bg-white">
+        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm" role="button"">Bsck to Sign-In</a>
+        <h1 class="mt-2">DJANGO CHAT ROOMS</h1>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h1 class="mt-2">Sign-Up</h1>
+                <hr class="mt-0 mb-4">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Save">
+                </form>
+            </div>
+        </div>
+    </div>
+</html>
 
-{% extends 'base.html' %}
 
-{% block content %}
-<h2>Register</h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Register">
-</form>
 
-<a href="{% url 'login' %}">Back to login</a>
-{% endblock %}
