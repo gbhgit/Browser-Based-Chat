@@ -1,31 +1,32 @@
 <!--users/templates/users/home.html-->
+<!DOCTYPE html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
 
-{% extends 'base.html' %}
-
-{% block content %}
-Hello, {{ user.username|default:'Guest' }}!
-
-<div>
+<html>
     {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'register_room' %}">Create Room</a>
-        
-        <div>
-            <h2> Chat Room List </h2>
-            <ul>
-                {% for room in rooms %}
-                    <li> 
-                        <a href="{% url 'chat_room' room.id %}"> {{room.room_name}}  </a>
-                    </li>
-                {% endfor %}
-            </ul>
+        <div class="shadow p-4 mb-4 bg-white">
+            <a href="{% url 'logout' %}" class="btn btn-outline-primary btn-sm" role="button"">Logout</a>
+            <a href="{% url 'register_room' %}" class="btn btn-outline-success btn-sm" role="button"">Click to Create a new Room</a>
+            <a class="btn btn-outline-secondary btn-sm"">User: {{ user.username }}</a>
         </div>
-
+        <div class="mt-3">
+            <div class="alert alert-secondary alert-dismissible text-center mt-3">
+                <b>Chat Room List</b>
+            </div>
+            <div class="list-group">
+                {% for room in rooms %}
+                    <a href="{% url 'chat_room' room.id %}" class="list-group-item list-group-item-action list-group-item-primary">{{room.room_name}}</a>
+                {% endfor %}
+            </div>
+        </div>
     {% else %}
         <a href="{% url 'login' %}">Login</a>
     {% endif %}
-    
-</div>
-
-
-{% endblock %}
+</html>
