@@ -2,12 +2,12 @@
 This application allow several users to talk in a chatroom and also to get stock quotes
 from an API using a specific command.
 
-## Recomendations
+### Recomendations
   - Redis >= 5
   - Python 3
   - Tested in Linux
 
-## Installation and Deploy using Docker
+### Installation and Deploy using Docker
 - 1: Check if redis is running, case is running stop your current redis server using the command below, just to avoid conflicts:
 		
 		sudo /etc/init.d/redis-server stop
@@ -23,20 +23,20 @@ from an API using a specific command.
 - 5: Then check the web app in [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 - 6: Basic registred user username: admin and password: 123
 
+
 ## Run tests with Docker
 - 1: After creating the container just get container id with command:
 
-		sudo sudo docker ps
+		sudo docker ps
 - 2: Enter inside the container by id:
 
 		sudo docker exec -it [container-id] bash
 - 3: Run the command inside the container:
 
 		python3 manage.py test
-
-
+		
 ## Considerations
-### Completed Mandatory Features
+### Completed all Mandatory Features
 :heavy_check_mark: Allow registered users to log in and talk with other users in a chatroom. \
 :heavy_check_mark: Allow users to post messages as commands into the chatroom with the following format
 /stock=stock_code \
@@ -51,14 +51,13 @@ the bot. \
 messages. \
 :heavy_check_mark: Unit test the functionality you prefer. \
 
-### Completed Bonus (Optional) Features
+### Completed all Bonus (Optional) Features
 :heavy_check_mark: Have more than one chatroom. \
 :heavy_check_mark: Handle messages that are not understood or any exceptions raised within the bot. \
 
 ### My Personal Bonus Features
 + Also i created a crud that is possible to register a new user in the page [http://127.0.0.1:8000/register/](http://127.0.0.1:8000/register/).
 + I used websocket services to create async system !
-+ A loged user can create a new chat room in the page [http://127.0.0.1:8000/room/](http://127.0.0.1:8000/room/).
++ A logged user can create a new chat room in the page [http://127.0.0.1:8000/room/](http://127.0.0.1:8000/room/).
 + All routes are protected and just only loged users post comments and create a new chat room.
-
-
++ All project was developed using the kanban of github as shown in page [https://github.com/gbhgit/Chat-Django/projects/1](https://github.com/gbhgit/Chat-Django/projects/1)
